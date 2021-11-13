@@ -37,6 +37,27 @@ async function run() {
      const user =await userCollection.findOne(query);
      res.send(user);
    })
+   //post in product collecion
+   app.post('/products', async (req,res)=>
+   {
+     console.log('hi');
+     const newUser = req.body;
+     const result = await userCollection.insertOne(newUser);
+      console.log('hitting the post',req.body);
+      res.json(result);
+   })
+
+   app.delete('/products/:id' , async (req,res)=>
+   {
+     const id =req.params.id;
+     const query ={_id : ObjectId(id)};
+     const result =await userCollection.deleteOne(query);
+     console.log(result);
+     res.json(result);
+     
+   })
+
+
    //post api
    app.post('/rivew', async (req,res)=>
    {
@@ -54,6 +75,34 @@ async function run() {
       console.log('hitting the post',req.body);
       res.json(result);
    })
+   app.put('/client/:id', async(req,res)=>
+      {
+        
+        const id=req.params.id;
+        
+        const UpdateUser= req.body;
+        const filter ={_id:ObjectId(id)};
+        const option={upset:true}
+        const updateDoc={
+          $set:{
+            
+            status:'Shipped',
+           
+
+          },
+        };
+        const result= await clientCollection.updateOne(filter,updateDoc,option);
+        res.send(result);
+      })
+
+      app.delete('/client/:id' , async (req,res)=>
+      {
+        const id =req.params.id;
+        const query ={_id : ObjectId(id)};
+        const result =await clientCollection.deleteOne(query);
+        res.json(result);
+        
+      })
 
    //get reviw
    app.get('/rivew', async (req,res)=>
@@ -119,7 +168,7 @@ app.put('/users', async (req, res) => {
 app.put('/users/admin', async (req,res)=>
 {
   const user=req.body;
-  const filter={email:user.email}
+  const filter={email: user.email}
   const updateDoc={$set:{role:'admin'}};
   const result=await loginCollection.updateOne(filter,updateDoc);
   res.json(result);
