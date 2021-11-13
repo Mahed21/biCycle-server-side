@@ -206,5 +206,3 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`port is`,port)
 })
-//GlMujml9F8WJ0qFC
-//commercial
